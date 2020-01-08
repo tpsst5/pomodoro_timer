@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color: rgb(76, 95, 121);">
+    
+    
+
+    <div id="settings">
+        <h1>Pomodoro Timer</h1>
+        <input type="text" id="session" value="Session" disabled/>
+        <input type="text" id="break" value="Break" disabled/>
+   
+        <button type="button"><i class="arrow sessionDown"></i></button>
+        <input type="text" id="sessionTime" value="25" disabled/>
+        <button type="button"><i class="arrow sessionUp"></i></button>
+      
+        <button type="button"><i class="arrow breakDown"></i></button>
+        <input type="text" id="breakTime" value="5" disabled/>
+        <button type="button"><i class="arrow breakUp"></i></button>
+
+    </div>
+    
+
+    <div id="timer">
+        <button type="button" id="play">&#9654</button>
+        <input type="text" id="timerSession" value="Session" disabled/>
+        <input type="text" id="countdown" value="25:00" disabled/>
+
+
+    </div>
+
+</body>
+
+<script src="main.js"></script>
+</body>
+</html>
