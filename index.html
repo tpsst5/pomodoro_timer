@@ -8,33 +8,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body style="background-color: rgb(76, 95, 121);">
-    
-    
-
     <div id="settings">
         <h1>Pomodoro Timer</h1>
+
         <input type="text" id="session" value="Session" disabled/>
         <input type="text" id="break" value="Break" disabled/>
    
-        <button type="button"><i class="arrow sessionDown"></i></button>
+        <button type="button" id="sessionDown">&#8681</button>
         <input type="text" id="sessionTime" value="25" disabled/>
-        <button type="button"><i class="arrow sessionUp"></i></button>
+        <button type="button" id="sessionUp">&#8679</button>
       
-        <button type="button"><i class="arrow breakDown"></i></button>
+        <button type="button" id="breakDown">&#8681</button>
         <input type="text" id="breakTime" value="5" disabled/>
-        <button type="button"><i class="arrow breakUp"></i></button>
-
+        <button type="button" id="breakUp">&#8679</button>
     </div>
-    
 
     <div id="timer">
         <button type="button" id="play">&#9654</button>
+        <button type="button" id="refresh">&#8635</button>
+        
         <input type="text" id="timerSession" value="Session" disabled/>
         <input type="text" id="countdown" value="25:00" disabled/>
 
-
+        <button type="button" id="pause">&#34</button>
+        <button type="button" id="stop">&#9632</button>
     </div>
-
 </body>
 
 <script src="main.js"></script>
