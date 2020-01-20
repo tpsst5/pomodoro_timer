@@ -80,10 +80,15 @@ const startSession = function(){
                     sessionDisplay[0].textContent = '0' + minutes + ':' + seconds;
                 } else if(minutes < 10 && seconds < 10){
                     sessionDisplay[0].textContent = '0' + minutes + ':0' + seconds;
-                }
+                } 
             } 
+        } if(minutes === 0 && seconds < 6 && seconds > 0){
+                const countdownAudio = document.getElementById('countdownSound');
+                countdownAudio.play();
         } if(minutes + seconds === 0){
             //clearInterval(timer);// Don't need clearInterval in this function. Need to transition between session and break time here.
+            const endAudio = document.getElementById('endSound');
+            endAudio.play();
             console.log('transition now');
         }
     }, 1000);
@@ -148,6 +153,8 @@ document.getElementById('stop').addEventListener('click', stopTimer);
 
 // disable play after one click
 document.getElementById('play').onclick = function(){
+    const playAudio = document.getElementById('playSound');
+    playAudio.play();
     this.disabled = true;
 }
 
