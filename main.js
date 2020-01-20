@@ -89,31 +89,30 @@ const startSession = function(){
     }, 1000);
 }
 
-const changeColor = function(){//this function's not actively running like play function. would need to add another setInterval perhaps. Try changing the variable after it works to see what works.
-    colorChangeVar;
-    console.log(colorChangeVar);
-    if(colorChangeVar < 24){
-        console.log('it\'s working');
-    }
-    // if(minutes > 0){// if statement not working here
-    //     console.log('mins greater than 0');
-    //     document.getElementById('timer').style.color = 'green';
-    // } else if(minutes === 0 && seconds > 15){
-    //     console.log('mins is 0 secs greater than 15');
-    //     document.getElementById('timer').style.color = 'green';
-    // } else if(minutes === 0 && seconds > 5){
-    //     document.getElementById('timer').style.color = 'yellow';
-    // } else if(minutes === 0 && seconds < 6){
-    //     document.getElementById('timer').style.color = 'red';
-    // }
+const changeColor = function(){
+    color = setInterval(function(){
+        displayMins = Number(sessionDisplay[0].textContent.split(':')[0]);
+        displaySecs = Number(sessionDisplay[0].textContent.split(':')[1]) - 1;
+        if(displayMins > 0){
+            document.getElementById('timer').style.color = '#33a11a';
+        } else if(displayMins === 0 && displaySecs > 15 || displaySecs === -1){
+            document.getElementById('timer').style.color = '#33a11a';
+        } else if(displayMins === 0 && displaySecs <= 15 && displaySecs > 5){
+            document.getElementById('timer').style.color = '#d8d012';
+        } else{
+            document.getElementById('timer').style.color = '#db1d1d';
+        }  
+    }, 1000);
 }
 
 const refreshTimer = function(){
     clearInterval(timer);
+    clearInterval(color);
     displayNumbers[0] = 25;
     displayNumbers[1] = 0;
     sessionDisplay[0].textContent = '25:00';
     sessionTime[0].textContent = 25;
+    document.getElementById('timer').style.color = 'black';
     document.getElementById('play').disabled = false;
     document.getElementById('sessionDown').disabled = false;
     document.getElementById('sessionUp').disabled = false;
@@ -121,6 +120,7 @@ const refreshTimer = function(){
 
 const pauseTimer = function(){
     clearInterval(timer);
+    clearInterval(color);
     displayNumbers[0] = minutes;
     displayNumbers[1] = seconds;
     document.getElementById('play').disabled = false;
@@ -128,8 +128,11 @@ const pauseTimer = function(){
 
 const stopTimer = function(){
     clearInterval(timer);
+    clearInterval(color);
     displayNumbers[0] = Number(sessionTime[0].textContent);
     displayNumbers[1] = 0;
+    sessionDisplay[0].textContent = displayNumbers[0] + ':00';
+    document.getElementById('timer').style.color = 'black';
     document.getElementById('play').disabled = false;
 }
 
@@ -148,28 +151,11 @@ document.getElementById('play').onclick = function(){
     this.disabled = true;
 }
 
-
 const sessionDisplay = document.getElementsByClassName('timer');
 let displayNumbers = sessionDisplay[0].textContent.split(':');
 let minutes;
 let seconds;
 let timer;
-let colorChangeVar = Number(sessionDisplay[0].textContent.split(':')[0]);;
-
-
-
-
-// TESTS
-
-// Session down button clicked:
-    // 1. XXX--Top session time goes down by one
-    // 2. XXX--Top session time goes down by one and stops at 5
-    // 3. Main session time goes down by one if session stopped
-    // 4. Main session time goes down by one and stops at 5 if session stopped
-    // 5. Top session doesn't change if session active
-    // 6. Main session doesn't change if session is active
-            //THOUGHTS: "Session inactive" could be defined as what?
-
-// Session up button clicked:
-    // 1. XXX--Top session goes up by one
-    // 2. XXX--Top session goes up by one and stops at 60
+let color;
+let displayMins;
+let displaySecs;
