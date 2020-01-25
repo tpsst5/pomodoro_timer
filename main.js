@@ -53,39 +53,56 @@ function increaseBreakTime(){
 
 const startSession = function(){
     clearInterval(timer);
-    document.getElementById('sessionDown').disabled = true;
-    document.getElementById('sessionUp').disabled = true;
-    document.getElementById('breakUp').disabled = true;
-    document.getElementById('breakDown').disabled = true;
-    document.getElementsByClassName('sessionText2')[0].textContent = 'Session';
-    minutes = Number(sessionDisplay[0].textContent.split(':')[0]);// issue when session restarts after break. It has minutes = break time
-    seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
-    sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
-
-    timer = setInterval(function(){
-        if(seconds <= 0){
-            seconds = 60;
-            minutes--;
+    if(!breakActive){
+        document.getElementById('sessionDown').disabled = true;
+        document.getElementById('sessionUp').disabled = true;
+        document.getElementById('breakUp').disabled = true;
+        document.getElementById('breakDown').disabled = true;
+        document.getElementsByClassName('sessionText2')[0].textContent = 'Session';
+        if(!sessionActive){
+            minutes = Number(sessionTime[0].textContent);
+            seconds = 0;
+        } else{
+            minutes = Number(sessionDisplay[0].textContent.split(':')[0]);
+            seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
         }
-        if(minutes < 0){
-            startBreak();
-        }
-        seconds--;
-        if(seconds === -1){//WHY IS THIS NEEDED. ISSUE TAKING THIS OUT
-            console.log('hey');
-            startBreak();
-        }
-
         sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
 
-    }, 1000);
+        sessionActive = true;
+
+        timer = setInterval(function(){
+            if(seconds <= 0){
+                seconds = 60;
+                minutes--;
+            }
+            if(minutes < 0){
+                sessionActive = null;
+                startBreak();
+            }
+            seconds--;
+            if(seconds === -1){//WHY IS THIS NEEDED. ISSUE TAKING THIS OUT
+                sessionActive = null;
+                startBreak();
+            }
+            sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
+
+        }, 1000);
+    } else{
+        startBreak();
+    }
 }
 
 const startBreak = function(){
     clearInterval(timer);
+    if(breakActive){
+        minutes = Number(sessionDisplay[0].textContent.split(':')[0]);
+        seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
+    } else{
+        minutes = Number(breakTime[0].textContent);
+        seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
+    }
+    breakActive = true;
     document.getElementsByClassName('sessionText2')[0].textContent = 'Break';
-    minutes = Number(breakTime[0].textContent);
-    seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
     sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
 
     timer = setInterval(function(){
@@ -94,13 +111,14 @@ const startBreak = function(){
             minutes--;
         }
         if(minutes < 0){
+            breakActive = null;
             startSession();
         }
         seconds--;
         if(seconds === -1){
+            breakActive = null;
             startSession();
         }
-
         sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
 
     }, 1000);
@@ -183,3 +201,5 @@ let timer;
 let color;
 let displayMins;
 let displaySecs;
+let breakActive;
+let sessionActive;
