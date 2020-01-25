@@ -37,7 +37,7 @@ document.getElementById('breakUp').addEventListener('click', increaseBreakTime);
 const breakTime = document.getElementsByClassName('adjustBreak');
 
 function reduceBreakTime(){
-    if(breakTime[0].textContent > 5){
+    if(breakTime[0].textContent > 1){
         breakTime[0].textContent = Number(breakTime[0].textContent) - 1;
     }
 }
@@ -51,61 +51,76 @@ function increaseBreakTime(){
 
 //----------- Second half of page w/ display buttons
 
-
-// Variables and functions to activate the session buttons and countdown the session
 const startSession = function(){
+    clearInterval(timer);
     document.getElementById('sessionDown').disabled = true;
     document.getElementById('sessionUp').disabled = true;
-    minutes = Number(displayNumbers[0]);
-    seconds = Number(displayNumbers[1]);
+    document.getElementById('breakUp').disabled = true;
+    document.getElementById('breakDown').disabled = true;
+    document.getElementsByClassName('sessionText2')[0].textContent = 'Session';
+    minutes = Number(sessionDisplay[0].textContent.split(':')[0]);// issue when session restarts after break. It has minutes = break time
+    seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
+    sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
+
     timer = setInterval(function(){
-        if(minutes + seconds > 0){
-            if(seconds === 0 && minutes > 0){
-                minutes = minutes - 1;
-                seconds = 59;
-                if(minutes < 10){
-                    sessionDisplay[0].textContent = '0' + minutes + ':' + seconds;
-                } else if(seconds < 10){
-                    sessionDisplay[0].textContent = minutes + ':0' + seconds;
-                } else{
-                    sessionDisplay[0].textContent = minutes + ':' + seconds;
-                }
-            } else if(seconds > 0){
-                seconds = seconds - 1;
-                if(minutes >= 10 && seconds >= 10){
-                    sessionDisplay[0].textContent = minutes + ':' + seconds;
-                } else if(minutes >= 10 && seconds < 10){
-                    sessionDisplay[0].textContent = minutes + ':0' + seconds;
-                } else if(minutes < 10 && seconds >= 10){
-                    sessionDisplay[0].textContent = '0' + minutes + ':' + seconds;
-                } else if(minutes < 10 && seconds < 10){
-                    sessionDisplay[0].textContent = '0' + minutes + ':0' + seconds;
-                } 
-            } 
-        } if(minutes === 0 && seconds < 6 && seconds > 0){
-                const countdownAudio = document.getElementById('countdownSound');
-                countdownAudio.play();
-        } if(minutes + seconds === 0){
-            //clearInterval(timer);// Don't need clearInterval in this function. Need to transition between session and break time here.
-            const endAudio = document.getElementById('endSound');
-            endAudio.play();
-            console.log('transition now');
+        if(seconds <= 0){
+            seconds = 60;
+            minutes--;
         }
+        if(minutes < 0){
+            startBreak();
+        }
+        seconds--;
+        if(seconds === -1){//WHY IS THIS NEEDED. ISSUE TAKING THIS OUT
+            console.log('hey');
+            startBreak();
+        }
+
+        sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
+
     }, 1000);
 }
+
+const startBreak = function(){
+    clearInterval(timer);
+    document.getElementsByClassName('sessionText2')[0].textContent = 'Break';
+    minutes = Number(breakTime[0].textContent);
+    seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
+    sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
+
+    timer = setInterval(function(){
+        if(seconds <= 0){
+            seconds = 60;
+            minutes--;
+        }
+        if(minutes < 0){
+            startSession();
+        }
+        seconds--;
+        if(seconds === -1){
+            startSession();
+        }
+
+        sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
+
+    }, 1000);
+}
+
+
+
 
 const changeColor = function(){
     color = setInterval(function(){
         displayMins = Number(sessionDisplay[0].textContent.split(':')[0]);
         displaySecs = Number(sessionDisplay[0].textContent.split(':')[1]) - 1;
         if(displayMins > 0){
-            document.getElementById('timer').style.color = '#33a11a';
+            document.getElementById('timer').style.color = '#e4f9f5';
         } else if(displayMins === 0 && displaySecs > 15 || displaySecs === -1){
-            document.getElementById('timer').style.color = '#33a11a';
+            document.getElementById('timer').style.color = '#e4f9f5';
         } else if(displayMins === 0 && displaySecs <= 15 && displaySecs > 5){
             document.getElementById('timer').style.color = '#d8d012';
         } else{
-            document.getElementById('timer').style.color = '#db1d1d';
+            document.getElementById('timer').style.color = '#40514e';
         }  
     }, 1000);
 }
@@ -121,13 +136,15 @@ const refreshTimer = function(){
     document.getElementById('play').disabled = false;
     document.getElementById('sessionDown').disabled = false;
     document.getElementById('sessionUp').disabled = false;
+    document.getElementById('breakUp').disabled = false;
+    document.getElementById('breakDown').disabled = false;
 }
 
 const pauseTimer = function(){
     clearInterval(timer);
     clearInterval(color);
-    displayNumbers[0] = minutes;
-    displayNumbers[1] = seconds;
+    // displayNumbers[0] = minutes;
+    // displayNumbers[1] = seconds;
     document.getElementById('play').disabled = false;
 } 
 
@@ -159,7 +176,7 @@ document.getElementById('play').onclick = function(){
 }
 
 const sessionDisplay = document.getElementsByClassName('timer');
-let displayNumbers = sessionDisplay[0].textContent.split(':');
+let displayNumbers = sessionDisplay[0].textContent.split(':');// this always equauls the number when paused. even after played it doesnt change. Can you remove this variable?
 let minutes;
 let seconds;
 let timer;

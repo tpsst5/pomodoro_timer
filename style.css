@@ -12,7 +12,7 @@ html {
     text-align: center;
     font-size: 200%;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: rgb(216, 210, 210);
+    color: #e4f9f5;
     margin: 5%;
  }
 
@@ -25,8 +25,8 @@ html {
 }
 
 .timeAdjustContainer > *{
-    border: 1px solid rgb(161, 188, 211);
-    background-color: rgb(161, 188, 211);
+    border: 1px solid #30e3ca;
+    background-color: #30e3ca;
 }
 
 .sessionText{
@@ -37,6 +37,7 @@ html {
     font-weight: bold;
     padding-top: .8em;
     padding-bottom: .3em;
+    color: #e4f9f5;
 }
 
 .breakText{
@@ -46,6 +47,7 @@ html {
     font-size: 137%;
     font-weight: bold;
     padding-top: .8em;
+    color: #e4f9f5;
 }
 
 .sessionDwnBtn{
@@ -64,6 +66,7 @@ html {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 180%;
     padding-bottom: 1em;
+    color: #40514e;
 }
 
 .sessionUpBtn{
@@ -83,6 +86,7 @@ html {
     text-align: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 180%;
+    color: #40514e;
 }
 
 .breakUpBtn{
@@ -100,8 +104,8 @@ html {
 }
 
 .sessionContainer > *{
-    border: 1px solid rgb(161, 188, 211);
-    background-color: rgb(161, 188, 211);
+    border: 1px solid #30e3ca;
+    background-color: #30e3ca;
 }
 
 .playBtn{
@@ -131,6 +135,7 @@ html {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 137%;
     font-weight: bold;
+    color: #e4f9f5;
 }
 
 .blankA{
@@ -146,6 +151,7 @@ html {
     grid-row: 3;
     text-align: center;
     font-family: 'monaco', 'andale mono', 'lucida console', 'consolas';
+    color: #40514e;
 }
 
 .blankB{
@@ -190,16 +196,17 @@ button {
     cursor: pointer;
     overflow: hidden;
     outline: none;
+    color: #40514e;
 }
 
 button:hover{
-    color: white;
+    color: #e4f9f5;
 }
 
 button:disabled{
-    color: black;
+    color: #40514e;
 }
 
 button:disabled:hover{
-    color: white;
+    color: #e4f9f5;
 }
