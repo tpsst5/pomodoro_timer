@@ -48,7 +48,6 @@ function increaseBreakTime(){
     }
 }
 
-
 //----------- Second half of page w/ display buttons
 
 const startSession = function(){
@@ -58,7 +57,7 @@ const startSession = function(){
         document.getElementById('sessionUp').disabled = true;
         document.getElementById('breakUp').disabled = true;
         document.getElementById('breakDown').disabled = true;
-        document.getElementsByClassName('sessionText2')[0].textContent = 'Session';
+        document.getElementsByClassName('sessionLabel')[0].textContent = 'Session';
         if(!sessionActive){
             minutes = Number(sessionTime[0].textContent);
             seconds = 0;
@@ -67,7 +66,6 @@ const startSession = function(){
             seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
         }
         sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
-
         sessionActive = true;
 
         timer = setInterval(function(){
@@ -80,12 +78,11 @@ const startSession = function(){
                 startBreak();
             }
             seconds--;
-            if(seconds === -1){//WHY IS THIS NEEDED. ISSUE TAKING THIS OUT
+            if(seconds < 0){
                 sessionActive = null;
                 startBreak();
             }
             sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
-
         }, 1000);
     } else{
         startBreak();
@@ -102,7 +99,7 @@ const startBreak = function(){
         seconds = Number(sessionDisplay[0].textContent.split(':')[1]);
     }
     breakActive = true;
-    document.getElementsByClassName('sessionText2')[0].textContent = 'Break';
+    document.getElementsByClassName('sessionLabel')[0].textContent = 'Break';
     sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
 
     timer = setInterval(function(){
@@ -120,12 +117,8 @@ const startBreak = function(){
             startSession();
         }
         sessionDisplay[0].textContent = (minutes ? (minutes > 9 ? minutes : '0' + minutes) : '00') + ':' + (seconds > 9 ? seconds : '0' + seconds);
-
     }, 1000);
 }
-
-
-
 
 const changeColor = function(){
     color = setInterval(function(){
@@ -146,6 +139,7 @@ const changeColor = function(){
 const refreshTimer = function(){
     clearInterval(timer);
     clearInterval(color);
+    breakActive = null;
     displayNumbers[0] = 25;
     displayNumbers[1] = 0;
     sessionDisplay[0].textContent = '25:00';
@@ -156,24 +150,25 @@ const refreshTimer = function(){
     document.getElementById('sessionUp').disabled = false;
     document.getElementById('breakUp').disabled = false;
     document.getElementById('breakDown').disabled = false;
+    document.getElementsByClassName('sessionLabel')[0].textContent = 'Session';
 }
 
 const pauseTimer = function(){
     clearInterval(timer);
     clearInterval(color);
-    // displayNumbers[0] = minutes;
-    // displayNumbers[1] = seconds;
     document.getElementById('play').disabled = false;
 } 
 
 const stopTimer = function(){
     clearInterval(timer);
     clearInterval(color);
+    breakActive = null;
     displayNumbers[0] = Number(sessionTime[0].textContent);
     displayNumbers[1] = 0;
     sessionDisplay[0].textContent = displayNumbers[0] + ':00';
-    document.getElementById('timer').style.color = 'black';
+    document.getElementById('timer').style.color = '#40514e';
     document.getElementById('play').disabled = false;
+    document.getElementsByClassName('sessionLabel')[0].textContent = 'Session';
 }
 
 document.getElementById('play').addEventListener('click', startSession);
@@ -194,7 +189,7 @@ document.getElementById('play').onclick = function(){
 }
 
 const sessionDisplay = document.getElementsByClassName('timer');
-let displayNumbers = sessionDisplay[0].textContent.split(':');// this always equauls the number when paused. even after played it doesnt change. Can you remove this variable?
+let displayNumbers = sessionDisplay[0].textContent.split(':');
 let minutes;
 let seconds;
 let timer;
